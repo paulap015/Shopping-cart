@@ -41,7 +41,7 @@ public class CompraServiceImpl implements  ICompraService {
 
         comp.setComentario(compra.getComentario());
         comp.setEstado(compra.getEstado());
-        System.out.println("aunto de guardar actualizar "+comp.getIdCompra());
+        //System.out.println("aunto de guardar actualizar "+comp.getIdCompra());
         return compraRepository.save(comp);
     }
 

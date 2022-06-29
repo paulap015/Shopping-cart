@@ -5,7 +5,6 @@ import com.unicauca.carrito.domain.model.Cliente;
 import com.unicauca.carrito.domain.model.Compra;
 import com.unicauca.carrito.service.IClienteService;
 import com.unicauca.carrito.service.ICompraService;
-import com.unicauca.carrito.service.ICompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class CompraController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<Compra> addCompra(@RequestBody Compra compra){
-
+        //verificar que exista el cliente para asignarlo a la compra
         Cliente verificarCliente = clienteService.encontrarPorId(compra.getCliente().getIdCliente());
         if(verificarCliente == null){
             System.out.println("El cliente no existe ");
@@ -54,7 +53,8 @@ public class CompraController {
         Compra comp = compraService.encontrarPorId(id);
 
         if (comp==null){
-            return ResponseEntity.ok(Compra.builder().build());
+            System.out.println("no existe la compra con ese id");
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(comp);
     }
@@ -63,8 +63,14 @@ public class CompraController {
     @PutMapping(value="/update")
     public ResponseEntity<?> update(@RequestBody Compra compra ){
 
+        //verificar que el cliente exista para asignarlo a la compra
+        Cliente verificarCliente = clienteService.encontrarPorId(compra.getCliente().getIdCliente());
+        if(verificarCliente == null){
+            System.out.println("El cliente no existe o esta inactivo ");
+            return ResponseEntity.noContent().build();
+        }
+        compra.setCliente(verificarCliente);
         Compra comp= compraService.actualizar(compra);
-
         if (comp==null){
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

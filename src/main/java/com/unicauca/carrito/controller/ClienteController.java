@@ -2,7 +2,9 @@ package com.unicauca.carrito.controller;
 
 
 import com.unicauca.carrito.domain.model.Cliente;
+import com.unicauca.carrito.domain.model.Rol;
 import com.unicauca.carrito.service.IClienteService;
+import com.unicauca.carrito.service.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,18 @@ public class ClienteController {
     @Autowired
     IClienteService clienteService;
 
+    @Autowired
+    IRolService rolService;
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente){
+        Rol verificarRol = rolService.encontrarPorId(cliente.getRol().getIdRol());
+        if(verificarRol == null){
+            System.out.println("no existe el Rol ");
+            return ResponseEntity.noContent().build();
+        }
+        cliente.setRol(verificarRol);
         Cliente newcli= clienteService.guardar(cliente);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newcli);
     }
@@ -41,7 +52,8 @@ public class ClienteController {
         Cliente cli= clienteService.encontrarPorId(id);
 
         if (cli==null){
-            return ResponseEntity.ok(Cliente.builder().build());
+            System.out.println("no existe el cliente con ese id ");
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(cli);
     }
@@ -49,14 +61,20 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value="/update")
     public ResponseEntity<?> update(@RequestBody Cliente cliente ){
-
-        Cliente cli= clienteService.actualizar(cliente);
-        System.out.println("Aquiii"+cli.toString());
-        if (cli==null){
-            System.out.println("no paso");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        Rol verificarRol = rolService.encontrarPorId(cliente.getRol().getIdRol());
+        //verificar que el rol exista
+        if(verificarRol == null){
+            System.out.println("no existe el Rol ");
+            return ResponseEntity.noContent().build();
         }
-        System.out.println("si paso");
+        // verificarque elcliente exista
+        cliente.setRol(verificarRol);
+        Cliente cli= clienteService.actualizar(cliente);
+        if (cli==null){
+            System.out.println("no existe cliente con ese id ");
+            return ResponseEntity.noContent().build();
+        }
+
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(cli);
     }
 

@@ -19,14 +19,11 @@ public class Compra {
 
     @Id
     private String idCompra;
-
     @DBRef
     private Cliente cliente;
     private LocalDateTime fecha;
-
     @Field(name="medio_pago")
     private String medioPago;
-
     private String comentario;
     private Boolean estado;
 }
