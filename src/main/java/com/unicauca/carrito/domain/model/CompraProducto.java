@@ -10,20 +10,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Document(collection = "compra_producto")
+@Document(collection = "compraProducto")
 public class CompraProducto {
 
     @Id
-    private Integer id;
-
+    private String id;
     @DBRef
     private Producto producto;
     @DBRef
     private Compra compra;
-
     private Integer cantidad;
     private Float total;
     private Boolean estado;
-
 
 }
