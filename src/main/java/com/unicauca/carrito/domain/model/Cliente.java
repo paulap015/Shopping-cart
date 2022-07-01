@@ -20,8 +20,9 @@ public class Cliente {
     @Field(name="nombre_cliente")
     private String nombreCliente;
     private String apellido;
-    private String correo;
+    //private String correo;
     private String password;
+    private String username;
     @DBRef
     private Rol rol;
     private Boolean estado;

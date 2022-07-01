@@ -33,9 +33,11 @@ public class AuthController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> createToken(@RequestBody AuthenticationRequest request){
         try{
+            System.out.println("va a entrar a authenticate ");
             authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
+            System.out.println("pasa authenticate "+request.getUsername());
             UserDetails userDetails =  detallesUsuarioService.loadUserByUsername(request.getUsername());
-
+            System.out.printf("Pasa detalles de usario "+userDetails.getUsername());
             String jwt = jwtUtil.generateToken(userDetails);
 
             return new ResponseEntity<>(new AuthenticationResponse(jwt),HttpStatus.OK);

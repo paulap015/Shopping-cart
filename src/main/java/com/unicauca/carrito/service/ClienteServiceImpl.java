@@ -38,7 +38,8 @@ public class ClienteServiceImpl implements IClienteService{
         }
 
         cli.setApellido(cliente.getApellido());
-        cli.setCorreo(cliente.getCorreo());
+        //cli.setCorreo(cliente.getCorreo());
+        cli.setUsername(cliente.getUsername());
         cli.setNombreCliente(cliente.getNombreCliente());
         cli.setRol(cliente.getRol());
         cli.setEstado(cliente.getEstado());
