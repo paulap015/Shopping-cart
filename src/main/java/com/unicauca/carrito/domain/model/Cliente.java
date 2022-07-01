@@ -17,7 +17,6 @@ public class Cliente {
 
     @Id
     private String idCliente;
-    @Field(name="nombre_cliente")
     private String nombreCliente;
     private String apellido;
     //private String correo;

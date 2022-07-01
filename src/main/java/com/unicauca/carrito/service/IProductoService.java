@@ -11,4 +11,9 @@ public interface IProductoService {
     Producto actualizar(Producto producto);
     Producto eliminar(String id);
     Producto encontrarPorId(String id);
+
+    boolean estaDisponible(String id);
+    void reducirStock(String idProducto,int cantidad);
+
+
 }

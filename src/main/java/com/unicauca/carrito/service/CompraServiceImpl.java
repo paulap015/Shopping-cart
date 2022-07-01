@@ -1,8 +1,10 @@
 package com.unicauca.carrito.service;
 
+import com.unicauca.carrito.dao.ICompraProductoRepository;
 import com.unicauca.carrito.dao.ICompraRepository;
 import com.unicauca.carrito.domain.model.Cliente;
 import com.unicauca.carrito.domain.model.Compra;
+import com.unicauca.carrito.domain.model.CompraProducto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,8 @@ public class CompraServiceImpl implements  ICompraService {
     @Autowired
     private ICompraRepository compraRepository;
 
-
+    @Autowired
+    private ICompraProductoRepository compraProductoRepository;
     @Override
     public List<Compra> buscarTodos() {
         return compraRepository.findAll();
@@ -31,6 +34,22 @@ public class CompraServiceImpl implements  ICompraService {
     }
 
     @Override
+    public void calcularTotal(String idCompra) {
+        Compra comp = encontrarPorId(idCompra);
+        if (comp == null){
+
+        }
+        float total=0;
+        //buscar en compraProducto y sacar los totales que tengan elid de compra
+        List<CompraProducto> items = compraProductoRepository.items(idCompra);
+        for(CompraProducto compra :items){
+            total = total+compra.getTotal();
+        }
+        comp.setTotalFinal(total);
+        actualizar(comp);
+    }
+
+    @Override
     public Compra actualizar(Compra compra) {
         Compra comp = encontrarPorId(compra.getIdCompra());
 
@@ -39,8 +58,13 @@ public class CompraServiceImpl implements  ICompraService {
             return null;
         }
 
+        comp.setCliente(compra.getCliente());
+        comp.setFecha(compra.getFecha());
+        comp.setMedioPago(compra.getMedioPago());
         comp.setComentario(compra.getComentario());
+        comp.setTotalFinal(compra.getTotalFinal());
         comp.setEstado(compra.getEstado());
+
         //System.out.println("aunto de guardar actualizar "+comp.getIdCompra());
         return compraRepository.save(comp);
     }

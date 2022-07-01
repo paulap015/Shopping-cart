@@ -24,6 +24,8 @@ public class Compra {
     private LocalDateTime fecha;
     @Field(name="medio_pago")
     private String medioPago;
+    private Float  totalFinal;
     private String comentario;
     private Boolean estado;
+
 }

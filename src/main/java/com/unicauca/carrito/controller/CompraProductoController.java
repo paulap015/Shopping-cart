@@ -24,6 +24,7 @@ public class CompraProductoController {
     ICompraService compraService;
     @Autowired
     IProductoService productoService;
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<CompraProducto> addCompraProducto(@RequestBody CompraProducto compraProducto){
@@ -37,12 +38,24 @@ public class CompraProductoController {
             System.out.println("producto  no existe para añadir a la compra");
             return ResponseEntity.noContent().build();
         }
+        // verificar que si haya existencia en stock
+        if(compraProducto.getCantidad()>verificarProducto.getCantidadStock()){
+            System.out.println("No hay disponibilidad de stock");
+            return ResponseEntity.noContent().build();
+        }
+        // actualizar stock del producto
+        productoService.reducirStock(verificarProducto.getIdProducto(),compraProducto.getCantidad());
+
         //asignar la referencia a compra y producto
         compraProducto.setCompra(verificarCompra);
         compraProducto.setProducto(verificarProducto);
-        //actualizar el total
+
+        //actualizar el total en compraProducto
         compraProducto.setTotal((float) (compraProducto.getProducto().getPrecio() * compraProducto.getCantidad()));
         CompraProducto newCP= compraProductoService.guardar(compraProducto);
+
+        //calcular el  total en compra
+        compraService.calcularTotal(newCP.getCompra().getIdCompra());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newCP);
     }
 
