@@ -12,4 +12,6 @@ public interface ICompraProductoService {
 
     CompraProducto eliminar(String id);
     CompraProducto encontrarPorId(String id);
+
+    List<CompraProducto> buscarProductosDeCompra(String idCompra);
 }

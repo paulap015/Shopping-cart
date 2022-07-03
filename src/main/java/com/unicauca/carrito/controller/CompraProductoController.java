@@ -28,37 +28,23 @@ public class CompraProductoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<CompraProducto> addCompraProducto(@RequestBody CompraProducto compraProducto){
-        Compra verificarCompra = compraService.encontrarPorId(compraProducto.getCompra().getIdCompra()) ;
-        Producto verificarProducto =productoService.encontrarPorId(compraProducto.getProducto().getIdProducto());
 
-        if(verificarCompra==null){
-            System.out.println("compra no existe para añadir prodcuto");
-            return ResponseEntity.noContent().build();
-        }if(verificarProducto==null){
-            System.out.println("producto  no existe para añadir a la compra");
-            return ResponseEntity.noContent().build();
-        }
-        // verificar que si haya existencia en stock
-        if(compraProducto.getCantidad()>verificarProducto.getCantidadStock()){
-            System.out.println("No hay disponibilidad de stock");
-            return ResponseEntity.noContent().build();
-        }
-        // actualizar stock del producto
-        productoService.reducirStock(verificarProducto.getIdProducto(),compraProducto.getCantidad());
-
-        //asignar la referencia a compra y producto
-        compraProducto.setCompra(verificarCompra);
-        compraProducto.setProducto(verificarProducto);
-
-        //actualizar el total en compraProducto
-        compraProducto.setTotal((float) (compraProducto.getProducto().getPrecio() * compraProducto.getCantidad()));
         CompraProducto newCP= compraProductoService.guardar(compraProducto);
+        if(newCP == null){
+            return ResponseEntity.noContent().build();
+        }
 
-        //calcular el  total en compra
-        compraService.calcularTotal(newCP.getCompra().getIdCompra());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newCP);
     }
 
+    @GetMapping(value="/allProducts/{idCompra}")
+    public ResponseEntity<?> getAllProductsFromCompra(@PathVariable("idCompra") String idCompra){
+        List<CompraProducto> compraProductos = compraProductoService.buscarProductosDeCompra(idCompra);
+        if (compraProductos.size()==0){
+            return ResponseEntity.noContent().build();
+        }
+        return new ResponseEntity<>(compraProductos,HttpStatus.OK);
+    }
     @GetMapping(value="/all")
     public ResponseEntity<?> getAllCompraProductos(){
         List<CompraProducto> compraProductos = compraProductoService.buscarTodos();

@@ -14,5 +14,5 @@ public interface IClienteRepository extends MongoRepository<Cliente,String> {
     Cliente findByClienteId (String idCliente);
 
     @Query(value = "{username:'?0'}")
-    Cliente findByUsername(String correo);
+    Cliente findByUsername(String username);
 }

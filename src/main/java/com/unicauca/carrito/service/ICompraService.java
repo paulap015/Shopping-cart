@@ -14,6 +14,6 @@ public interface ICompraService {
     Compra eliminar(String id);
     Compra encontrarPorId(String id);
 
-    void calcularTotal(String idCompra);
+    void calcularTotal(Compra comp);
 
 }

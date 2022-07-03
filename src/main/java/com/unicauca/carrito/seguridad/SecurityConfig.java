@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/cliente/create").permitAll()
                 .antMatchers("/**/authenticate").permitAll()
                 .antMatchers("/").hasAnyAuthority("ADMIN","CUSTOMER")
+                .antMatchers("/**/compraProducto/create").hasAnyAuthority("ADMIN","CUSTOMER")
                 .antMatchers("/**/create").hasAnyAuthority("ADMIN")
                 .antMatchers("/**/delete").hasAnyAuthority("ADMIN")
                 .antMatchers("/**/update").hasAnyAuthority("ADMIN")
