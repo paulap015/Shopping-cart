@@ -40,7 +40,7 @@ public class AuthController {
             System.out.printf("Pasa detalles de usario "+userDetails.getUsername());
             String jwt = jwtUtil.generateToken(userDetails);
 
-            return new ResponseEntity<>(new AuthenticationResponse(jwt),HttpStatus.OK);
+            return new ResponseEntity<>(new AuthenticationResponse(jwt ),HttpStatus.OK);
         }catch(BadCredentialsException e ){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

@@ -20,6 +20,7 @@ public class CategoriaServiceImpl implements ICategoriaService{
 
     @Override
     public Categoria guardar(Categoria categoria) {
+        categoria.setEstado(true);
         return categoriaRepository.save(categoria);
     }
     @Override

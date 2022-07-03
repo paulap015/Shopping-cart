@@ -19,7 +19,6 @@ public class Cliente {
     private String idCliente;
     private String nombreCliente;
     private String apellido;
-    //private String correo;
     private String password;
     private String username;
     @DBRef

@@ -35,13 +35,15 @@ public class CompraServiceImpl implements  ICompraService {
 
     @Override
     public void calcularTotal(String idCompra) {
+        System.out.println("entra a calcular compra");
         Compra comp = encontrarPorId(idCompra);
         if (comp == null){
-
+            System.out.println("compra no existe ");
         }
         float total=0;
         //buscar en compraProducto y sacar los totales que tengan elid de compra
         List<CompraProducto> items = compraProductoRepository.items(idCompra);
+        System.out.println("Items encontrados : "+items.size());
         for(CompraProducto compra :items){
             total = total+compra.getTotal();
         }

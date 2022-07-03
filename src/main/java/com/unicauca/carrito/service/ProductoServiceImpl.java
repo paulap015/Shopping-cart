@@ -58,13 +58,17 @@ public class ProductoServiceImpl implements IProductoService{
         if (newProducto ==null){
             return null;
         }
-
+        if(estaDisponible(newProducto.getIdProducto())==false && newProducto.getCantidadStock()==0 &&producto.getCantidadStock()>0){
+            newProducto.setEstado(true); //vuelve a haber cantidad en stock
+        }else{
+            newProducto.setEstado(producto.getEstado());
+        }
         // actualizar
         newProducto.setNombre(producto.getNombre());
         newProducto.setPrecio(producto.getPrecio());
         newProducto.setCantidadStock(producto.getCantidadStock());
         newProducto.setCategoria(producto.getCategoria());
-        newProducto.setEstado(producto.getEstado());
+        //newProducto.setEstado(producto.getEstado());
 
         return  productoRepository.save(newProducto);
     }

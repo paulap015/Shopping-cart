@@ -20,6 +20,7 @@ public class RolServiceImpl implements IRolService{
 
     @Override
     public Rol guardar(Rol rol) {
+        rol.setEstado(true);
 
         return rolRepository.save(rol);
     }
@@ -27,6 +28,11 @@ public class RolServiceImpl implements IRolService{
     @Override
     public Rol encontrarPorId(String id) {
         return rolRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Rol encontrarPorNombreRol(String nombre) {
+        return rolRepository.findByNombreRol(nombre);
     }
 
     @Override

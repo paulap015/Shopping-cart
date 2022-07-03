@@ -25,12 +25,7 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<Cliente> addCliente(@RequestBody Cliente cliente){
-        Rol verificarRol = rolService.encontrarPorId(cliente.getRol().getIdRol());
-        if(verificarRol == null){
-            System.out.println("no existe el Rol ");
-            return ResponseEntity.noContent().build();
-        }
-        cliente.setRol(verificarRol);
+
         Cliente newcli= clienteService.guardar(cliente);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newcli);
     }
@@ -61,17 +56,10 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value="/update")
     public ResponseEntity<?> update(@RequestBody Cliente cliente ){
-        Rol verificarRol = rolService.encontrarPorId(cliente.getRol().getIdRol());
-        //verificar que el rol exista
-        if(verificarRol == null){
-            System.out.println("no existe el Rol ");
-            return ResponseEntity.noContent().build();
-        }
-        // verificarque elcliente exista
-        cliente.setRol(verificarRol);
+
         Cliente cli= clienteService.actualizar(cliente);
         if (cli==null){
-            System.out.println("no existe cliente con ese id ");
+
             return ResponseEntity.noContent().build();
         }
 

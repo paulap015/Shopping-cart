@@ -12,4 +12,6 @@ public interface IRolService {
     Rol actualizar(Rol rol);
     Rol eliminar(String id);
     Rol encontrarPorId(String id);
+
+    Rol encontrarPorNombreRol(String nombre);
 }
