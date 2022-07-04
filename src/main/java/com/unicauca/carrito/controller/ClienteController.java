@@ -2,9 +2,7 @@ package com.unicauca.carrito.controller;
 
 
 import com.unicauca.carrito.domain.model.Cliente;
-import com.unicauca.carrito.domain.model.Rol;
 import com.unicauca.carrito.service.IClienteService;
-import com.unicauca.carrito.service.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +16,6 @@ public class ClienteController {
 
     @Autowired
     IClienteService clienteService;
-
-    @Autowired
-    IRolService rolService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")

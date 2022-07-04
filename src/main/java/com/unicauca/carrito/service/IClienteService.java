@@ -13,4 +13,6 @@ public interface IClienteService {
 
     Cliente eliminar(String id);
     Cliente encontrarPorId(String id);
+
+    Cliente encontrarPorUsername(String username);
 }

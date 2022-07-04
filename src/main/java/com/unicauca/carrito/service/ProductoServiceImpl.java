@@ -1,8 +1,10 @@
 package com.unicauca.carrito.service;
 
 import com.unicauca.carrito.dao.IProductoRepository;
+import com.unicauca.carrito.domain.model.Categoria;
 import com.unicauca.carrito.domain.model.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +14,8 @@ public class ProductoServiceImpl implements IProductoService{
 
     @Autowired
     private IProductoRepository productoRepository;
-
+    @Autowired
+    ICategoriaService categoriaService;
     @Override
     public List<Producto> buscarTodos() {
         return productoRepository.findAll();
@@ -20,7 +23,14 @@ public class ProductoServiceImpl implements IProductoService{
 
     @Override
     public Producto guardar(Producto producto) {
+        //verificar que exista la categoria para asignarlo a producto
+        Categoria verificarCategoria = categoriaService.encontrarPorId(producto.getCategoria().getIdCategoria());
 
+        if(verificarCategoria == null){
+            System.out.println("La categoria no existe ");
+            return null;
+        }
+        producto.setCategoria(verificarCategoria);
         return productoRepository.save(producto);
     }
 
@@ -53,6 +63,13 @@ public class ProductoServiceImpl implements IProductoService{
 
     @Override
     public Producto actualizar(Producto producto) {
+        Categoria verificarCategoria = categoriaService.encontrarPorId(producto.getCategoria().getIdCategoria());
+
+        if(verificarCategoria == null){
+            System.out.println("La categoria no existe ");
+            return null;
+        }
+        producto.setCategoria(verificarCategoria);
         Producto newProducto = encontrarPorId(producto.getIdProducto());
 
         if (newProducto ==null){

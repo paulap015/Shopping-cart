@@ -40,6 +40,11 @@ public class ClienteServiceImpl implements IClienteService{
     }
 
     @Override
+    public Cliente encontrarPorUsername(String username) {
+        return clienteRepository.findByUsername(username);
+    }
+
+    @Override
     public Cliente actualizar(Cliente cliente) {
         Rol rol = rolService.encontrarPorId(cliente.getRol().getIdRol());
         if(rol ==null){

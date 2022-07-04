@@ -18,23 +18,17 @@ public class ProductoController {
 
     @Autowired
     IProductoService productoService;
-    @Autowired
-    ICategoriaService categoriaService;
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<Producto> addProducto(@RequestBody Producto producto){
-        //verificar que exista la categoria para asignarlo a producto
 
-        Categoria verificarCategoria = categoriaService.encontrarPorId(producto.getCategoria().getIdCategoria());
-
-        if(verificarCategoria == null){
-            System.out.println("La categoria no existe ");
+        Producto newProducto= productoService.guardar(producto);
+        if(newProducto == null){
             return ResponseEntity.noContent().build();
         }
-        producto.setCategoria(verificarCategoria);
-        Producto newComp= productoService.guardar(producto);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(newComp);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(newProducto);
     }
 
     @GetMapping(value="/all")
@@ -64,13 +58,7 @@ public class ProductoController {
     @PutMapping(value="/update")
     public ResponseEntity<?> update(@RequestBody Producto producto ){
 
-        Categoria verificarCategoria = categoriaService.encontrarPorId(producto.getCategoria().getIdCategoria());
 
-        if(verificarCategoria == null){
-            System.out.println("La categoria no existe ");
-            return ResponseEntity.noContent().build();
-        }
-        producto.setCategoria(verificarCategoria);
         Producto prod= productoService.actualizar(producto);
         if (prod==null){
 

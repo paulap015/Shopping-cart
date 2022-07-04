@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class Compra {
     private String idCompra;
     @DBRef
     private Cliente cliente;
-    private LocalDateTime fecha;
+    private Date fecha;
     @Field(name="medio_pago")
     private String medioPago;
     private Float  totalFinal;

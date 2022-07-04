@@ -3,6 +3,7 @@ package com.unicauca.carrito.controller;
 import com.unicauca.carrito.domain.model.Compra;
 import com.unicauca.carrito.domain.model.CompraProducto;
 import com.unicauca.carrito.domain.model.Producto;
+import com.unicauca.carrito.seguridad.JWTUtil;
 import com.unicauca.carrito.service.IClienteService;
 import com.unicauca.carrito.service.ICompraProductoService;
 import com.unicauca.carrito.service.ICompraService;
@@ -21,19 +22,21 @@ public class CompraProductoController {
     ICompraProductoService compraProductoService;
 
     @Autowired
-    ICompraService compraService;
-    @Autowired
-    IProductoService productoService;
+    JWTUtil jwtUtil;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
-    public ResponseEntity<CompraProducto> addCompraProducto(@RequestBody CompraProducto compraProducto){
+    public ResponseEntity<CompraProducto> addCompraProducto(@RequestHeader(value = "Authorization") String token,@RequestBody CompraProducto compraProducto){
+        token= token.replace("Bearer ","");
+        System.out.println("TOKEN "+token);
+        String cliente = jwtUtil.extractUsername(token);
+        System.out.println("El cliente que esta creando CompraProducto es :"+cliente);
 
-        CompraProducto newCP= compraProductoService.guardar(compraProducto);
+        CompraProducto newCP= compraProductoService.guardar(compraProducto,cliente);
         if(newCP == null){
             return ResponseEntity.noContent().build();
         }
-
+        compraProductoService.totalEnCompra(newCP);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newCP);
     }
 
@@ -69,27 +72,18 @@ public class CompraProductoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value="/update")
-    public ResponseEntity<?> update(@RequestBody CompraProducto compraProducto ){
-        Compra verificarCompra = compraService.encontrarPorId(compraProducto.getCompra().getIdCompra()) ;
-        Producto verificarProducto =productoService.encontrarPorId(compraProducto.getProducto().getIdProducto());
-        //verificar que exista la compra y el producto
-        if(verificarCompra==null){
-            System.out.println("compra no existe para añadir prodcuto");
-            return ResponseEntity.noContent().build();
-        }if(verificarProducto==null){
-            System.out.println("producto  no existe para añadir a la compra");
-            return ResponseEntity.noContent().build();
-        }
-        //asignar los obj al obj que se va a actualizar
-        compraProducto.setCompra(verificarCompra);
-        compraProducto.setProducto(verificarProducto);
+    public ResponseEntity<?> update(@RequestHeader(value = "Authorization") String token,@RequestBody CompraProducto compraProducto ){
+        token= token.replace("Bearer ","");
+        System.out.println("TOKEN "+token);
+        String cliente = jwtUtil.extractUsername(token);
+        System.out.println("El cliente que esta actualizando CompraProducto es :"+cliente);
 
-        CompraProducto newCT = compraProductoService.actualizar(compraProducto);
+        CompraProducto newCT = compraProductoService.actualizar(compraProducto,cliente);
         if (newCT ==null){
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
+        compraProductoService.totalEnCompra(newCT);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newCT);
     }
 

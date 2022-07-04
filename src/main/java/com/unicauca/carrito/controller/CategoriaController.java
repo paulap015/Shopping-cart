@@ -1,6 +1,7 @@
 package com.unicauca.carrito.controller;
 
 import com.unicauca.carrito.domain.model.Categoria;
+import com.unicauca.carrito.seguridad.JWTUtil;
 import com.unicauca.carrito.service.CategoriaServiceImpl;
 import com.unicauca.carrito.service.ICategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,17 @@ public class CategoriaController {
 
     @Autowired
     ICategoriaService categoriaService;
+    @Autowired
+    JWTUtil jwtUtil;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
-    public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> addCategoria(@RequestHeader(value = "Authorization") String token,@RequestBody Categoria categoria){
+
+        token= token.replace("Bearer ","");
+        System.out.println("TOKEN "+token);
+        String cliente = jwtUtil.extractUsername(token);
+        System.out.println("El cliente que esta creando Categoria es :"+cliente);
         Categoria newCat= categoriaService.guardar(categoria);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newCat);
     }
@@ -54,7 +62,7 @@ public class CategoriaController {
     public ResponseEntity<?> update(@RequestBody Categoria categoria ){
 
         Categoria cat = categoriaService.actualizar(categoria);
-        System.out.println("Aquiii"+cat.toString());
+
         if (cat ==null){
             System.out.println("no paso");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

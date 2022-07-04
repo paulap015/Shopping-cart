@@ -19,20 +19,15 @@ public class CompraController {
     @Autowired
     ICompraService compraService;
 
-    @Autowired
-    IClienteService clienteService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
     public ResponseEntity<Compra> addCompra(@RequestBody Compra compra){
-        //verificar que exista el cliente para asignarlo a la compra
-        Cliente verificarCliente = clienteService.encontrarPorId(compra.getCliente().getIdCliente());
-        if(verificarCliente == null){
-            System.out.println("El cliente no existe ");
+
+        Compra newComp= compraService.guardar(compra);
+        if (newComp==null){
             return ResponseEntity.noContent().build();
         }
-        compra.setCliente(verificarCliente);
-        Compra newComp= compraService.guardar(compra);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newComp);
     }
 
@@ -63,13 +58,7 @@ public class CompraController {
     @PutMapping(value="/update")
     public ResponseEntity<?> update(@RequestBody Compra compra ){
 
-        //verificar que el cliente exista para asignarlo a la compra
-        Cliente verificarCliente = clienteService.encontrarPorId(compra.getCliente().getIdCliente());
-        if(verificarCliente == null){
-            System.out.println("El cliente no existe o esta inactivo ");
-            return ResponseEntity.noContent().build();
-        }
-        compra.setCliente(verificarCliente);
+
         Compra comp= compraService.actualizar(compra);
         if (comp==null){
 
