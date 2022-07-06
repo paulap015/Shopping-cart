@@ -46,7 +46,7 @@ public class AuthController {
         try {
             Cliente buscarCliente = clienteService.encontrarPorUsername(request.getUsername());
             if (buscarCliente==null){
-                return ResponseEntity.noContent().build();
+                return new ResponseEntity<>(ClienteDto.builder().build(),HttpStatus.OK);
             }
             System.out.println("va a entrar a authenticate ");
             authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -54,8 +54,6 @@ public class AuthController {
             UserDetails userDetails = detallesUsuarioService.loadUserByUsername(request.getUsername());
             System.out.printf("Pasa detalles de usario " + userDetails.getUsername());
             String jwt = jwtUtil.generateToken(userDetails);
-
-
             ClienteDto newClienteDTO= new ClienteDto(userDetails.getUsername(),jwt,buscarCliente.getRol().getNombreRol(), buscarCliente.getIdCompra());
             return new ResponseEntity<>(newClienteDTO,HttpStatus.OK);
             //return new ResponseEntity<>(new AuthenticationResponse(jwt ),HttpStatus.OK);
