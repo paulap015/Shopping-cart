@@ -31,6 +31,7 @@ public class ProductoServiceImpl implements IProductoService{
             return null;
         }
         producto.setCategoria(verificarCategoria);
+        producto.setEstado(true);
         return productoRepository.save(producto);
     }
 

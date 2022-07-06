@@ -37,7 +37,7 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
     public CompraProducto guardar(CompraProducto compraProducto, String username) {
         Compra verificarCompra=null;
         if(compraProducto.getCompra() != null){
-            verificarCompra = compraService.encontrarPorId(compraProducto.getCompra().getIdCompra()) ;
+
         }
 
         Producto verificarProducto =productoService.encontrarPorId(compraProducto.getProducto().getIdProducto());
@@ -46,13 +46,18 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
         if (verificarCliente==null){
             return null;
         }
-        if(verificarCompra==null){
-            System.out.println("compra no existe para añadir prodcuto");
+        //el cliente existe vamos a ver si tiene carrito
+        verificarCompra = compraService.encontrarPorId(verificarCliente.getIdCompra()) ;
+        if(verificarCompra==null){ //el cliente no tiene carrito asociado
+            //System.out.println("compra no existe para añadir prodcuto");
             Compra newCompra = new Compra();
             newCompra.setCliente(verificarCliente);
             verificarCompra=compraService.guardar(newCompra);
+            verificarCliente.setIdCompra(verificarCompra.getIdCompra());
+            clienteService.actualizar(verificarCliente);
             //return null;
-        }if(verificarProducto==null){
+        }
+        if(verificarProducto==null){
             System.out.println("producto  no existe para añadir a la compra");
             return null;
         }
