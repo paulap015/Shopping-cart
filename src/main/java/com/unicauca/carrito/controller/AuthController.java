@@ -1,9 +1,8 @@
 package com.unicauca.carrito.controller;
 
 import com.unicauca.carrito.domain.AuthenticationRequest;
-import com.unicauca.carrito.domain.AuthenticationResponse;
 import com.unicauca.carrito.domain.model.Cliente;
-import com.unicauca.carrito.domain.model.ClienteDao;
+import com.unicauca.carrito.domain.model.ClienteDto;
 import com.unicauca.carrito.domain.model.Compra;
 import com.unicauca.carrito.seguridad.JWTUtil;
 import com.unicauca.carrito.service.DetallesUsuarioService;
@@ -33,11 +32,11 @@ public class AuthController {
 
     @Autowired
     private JWTUtil jwtUtil;
-    @Autowired
-    private ClienteDao clienteDao;
+
     @Lazy
     @Autowired
     private IClienteService clienteService;
+    @Lazy
     @Autowired
     private ICompraService compraService;
 
@@ -55,10 +54,10 @@ public class AuthController {
             UserDetails userDetails = detallesUsuarioService.loadUserByUsername(request.getUsername());
             System.out.printf("Pasa detalles de usario " + userDetails.getUsername());
             String jwt = jwtUtil.generateToken(userDetails);
-            Compra newCompra = compraService.guardar(new Compra(buscarCliente,"PSE",""));
 
-            ClienteDao newCliente= new ClienteDao(userDetails.getUsername(),jwt,buscarCliente.getRol().getNombreRol(),newCompra.getIdCompra());
-            return new ResponseEntity<>(newCliente,HttpStatus.OK);
+
+            ClienteDto newClienteDTO= new ClienteDto(userDetails.getUsername(),jwt,buscarCliente.getRol().getNombreRol(), buscarCliente.getIdCompra());
+            return new ResponseEntity<>(newClienteDTO,HttpStatus.OK);
             //return new ResponseEntity<>(new AuthenticationResponse(jwt ),HttpStatus.OK);
         }catch(BadCredentialsException e ){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -3,8 +3,10 @@ package com.unicauca.carrito.service;
 import com.unicauca.carrito.dao.IClienteRepository;
 import com.unicauca.carrito.domain.model.Cliente;
 import com.unicauca.carrito.domain.model.Cliente;
+import com.unicauca.carrito.domain.model.Compra;
 import com.unicauca.carrito.domain.model.Rol;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,12 @@ public class ClienteServiceImpl implements IClienteService{
     @Autowired
     private IClienteRepository clienteRepository;
 
+    @Lazy
+    @Autowired
+    private IClienteService clienteService;
+    @Lazy
+    @Autowired
+    private ICompraService compraService;
     @Autowired
     IRolService rolService;
 
@@ -27,10 +35,15 @@ public class ClienteServiceImpl implements IClienteService{
         System.out.println("vouy a buscar rol");
         Rol rol = rolService.encontrarPorNombreRol("customer");
         System.out.println("obtuve el rol "+rol.getNombreRol());
+
         cliente.setRol(rol);
         cliente.setEstado(true);
 
-        return clienteRepository.save(cliente);
+        Cliente cli = clienteRepository.save(cliente);
+        Compra newCompra = compraService.guardar(new Compra(cli,"PSE",""));
+        cliente.setIdCompra(newCompra.getIdCompra());
+        actualizar(cli);
+        return cli;
 
     }
     @Override
@@ -57,6 +70,9 @@ public class ClienteServiceImpl implements IClienteService{
         if (cli == null){
             System.out.println("no existe cliente con ese id ");
             return null;
+        }
+        if(cliente.getIdCompra()!= null){
+            cli.setIdCompra(cliente.getIdCompra());
         }
         cli.setNombreCliente(cliente.getNombreCliente());
         cli.setApellido(cliente.getApellido());
