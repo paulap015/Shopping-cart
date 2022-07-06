@@ -18,6 +18,7 @@ public class Cliente {
     @Id
     private String idCliente;
     private String nombreCliente;
+    private String idCompra;
     private String apellido;
     private String password;
     private String username;

@@ -22,5 +22,6 @@ public class Producto {
     @Field(name="cantidad_stock")
     private Integer cantidadStock;
     private String foto;
+    private String descripcion;
     private Boolean estado;
 }

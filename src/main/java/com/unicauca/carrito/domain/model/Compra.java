@@ -29,4 +29,10 @@ public class Compra {
     private String comentario;
     private Boolean estado;
 
+    public Compra (Cliente cli,String pago ,String com)
+    {
+        cliente =cli;
+        medioPago=pago;
+        comentario=com;
+    }
 }
