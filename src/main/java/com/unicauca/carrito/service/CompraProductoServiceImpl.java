@@ -34,29 +34,14 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
     }
 
     @Override
-    public CompraProducto guardar(CompraProducto compraProducto, String username) {
+    public CompraProducto guardar(CompraProducto compraProducto) {
         Compra verificarCompra=null;
         if(compraProducto.getCompra() != null){
 
         }
 
         Producto verificarProducto =productoService.encontrarPorId(compraProducto.getProducto().getIdProducto());
-        Cliente verificarCliente=clienteService.encontrarPorUsername(username);
 
-        if (verificarCliente==null){
-            return null;
-        }
-        //el cliente existe vamos a ver si tiene carrito
-        verificarCompra = compraService.encontrarPorId(verificarCliente.getIdCompra()) ;
-        if(verificarCompra==null){ //el cliente no tiene carrito asociado
-            //System.out.println("compra no existe para añadir prodcuto");
-            Compra newCompra = new Compra();
-            newCompra.setCliente(verificarCliente);
-            verificarCompra=compraService.guardar(newCompra);
-            verificarCliente.setIdCompra(verificarCompra.getIdCompra());
-            clienteService.actualizar(verificarCliente);
-            //return null;
-        }
         if(verificarProducto==null){
             System.out.println("producto  no existe para añadir a la compra");
             return null;
@@ -70,7 +55,7 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
         productoService.reducirStock(verificarProducto.getIdProducto(),compraProducto.getCantidad());
 
         //asignar la referencia a compra y producto
-        compraProducto.setCompra(verificarCompra);
+        compraProducto.setCompra(compraService.encontrarPorId(compraProducto.getCompra().getIdCompra()));
         compraProducto.setProducto(verificarProducto);
         compraProducto.setEstado(true);
 
@@ -88,6 +73,7 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
     }
 
     public void totalEnCompra(CompraProducto compraProducto){
+        System.out.println("Hello en Total" + compraProducto.getCompra());
         compraService.calcularTotal(compraProducto.getCompra());
     }
     @Override

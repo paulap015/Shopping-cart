@@ -27,21 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //los endpoint que terminen en authenticate permitirlas http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate").permitAll()
         //perimitir todos los path
-        //http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll()
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("/**/cliente/create").permitAll()
-                .antMatchers("/**/authenticate").permitAll()
-                .antMatchers("/").hasAnyAuthority("ADMIN","CUSTOMER")
-                .antMatchers("/**/compraProducto/create").hasAnyAuthority("ADMIN","CUSTOMER")
-                .antMatchers("/**/create").hasAnyAuthority("ADMIN")
-                .antMatchers("/**/delete").hasAnyAuthority("ADMIN")
-                .antMatchers("/**/update").hasAnyAuthority("ADMIN")
-
-                .anyRequest().authenticated().and().sessionManagement()
-
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll();
     }
 
     @Override

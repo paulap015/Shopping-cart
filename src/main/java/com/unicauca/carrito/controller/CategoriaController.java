@@ -26,12 +26,8 @@ public class CategoriaController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
-    public ResponseEntity<Categoria> addCategoria(@RequestHeader(value = "Authorization") String token,@RequestBody Categoria categoria){
+    public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria){
 
-        token= token.replace("Bearer ","");
-        System.out.println("TOKEN "+token);
-        String cliente = jwtUtil.extractUsername(token);
-        System.out.println("El cliente que esta creando Categoria es :"+cliente);
         Categoria newCat= categoriaService.guardar(categoria);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(newCat);
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICompraProductoService {
     List<CompraProducto> buscarTodos();
-    CompraProducto guardar(CompraProducto compraProducto,String username);
+    CompraProducto guardar(CompraProducto compraProducto);
 
     CompraProducto actualizar(CompraProducto compraProducto,String username);
 

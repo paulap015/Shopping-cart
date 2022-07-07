@@ -27,13 +27,10 @@ public class CompraProductoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
-    public ResponseEntity<CompraProducto> addCompraProducto(@RequestHeader(value = "Authorization") String token,@RequestBody CompraProducto compraProducto){
-        token= token.replace("Bearer ","");
-        System.out.println("TOKEN "+token);
-        String cliente = jwtUtil.extractUsername(token);
-        System.out.println("El cliente que esta creando CompraProducto es :"+cliente);
+    public ResponseEntity<CompraProducto> addCompraProducto(@RequestBody CompraProducto compraProducto){
 
-        CompraProducto newCP= compraProductoService.guardar(compraProducto,cliente);
+
+        CompraProducto newCP= compraProductoService.guardar(compraProducto);
         if(newCP == null){
             return ResponseEntity.noContent().build();
         }
@@ -56,6 +53,7 @@ public class CompraProductoController {
         if (compraProductos.size()==0){
             return ResponseEntity.noContent().build();
         }
+        System.out.println("Productos:" + compraProductos.toString());
         compraProductos.removeIf(cat-> cat.getEstado()==false);
         return new ResponseEntity<>(compraProductos,HttpStatus.OK);
     }
