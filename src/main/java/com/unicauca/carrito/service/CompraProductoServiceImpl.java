@@ -35,10 +35,6 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
 
     @Override
     public CompraProducto guardar(CompraProducto compraProducto) {
-        Compra verificarCompra=null;
-        if(compraProducto.getCompra() != null){
-
-        }
 
         Producto verificarProducto =productoService.encontrarPorId(compraProducto.getProducto().getIdProducto());
 
@@ -73,7 +69,7 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
     }
 
     public void totalEnCompra(CompraProducto compraProducto){
-        System.out.println("Hello en Total" + compraProducto.getCompra());
+
         compraService.calcularTotal(compraProducto.getCompra());
     }
     @Override

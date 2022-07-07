@@ -45,6 +45,7 @@ public class CompraProductoController {
         if (compraProductos.size()==0){
             return ResponseEntity.noContent().build();
         }
+        compraProductos.removeIf(cat-> cat.getEstado()==false);
         return new ResponseEntity<>(compraProductos,HttpStatus.OK);
     }
     @GetMapping(value="/all")

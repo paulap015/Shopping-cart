@@ -58,7 +58,8 @@ public class AuthController {
             return new ResponseEntity<>(newClienteDTO,HttpStatus.OK);
             //return new ResponseEntity<>(new AuthenticationResponse(jwt ),HttpStatus.OK);
         }catch(BadCredentialsException e ){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            //return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(ClienteDto.builder().build(),HttpStatus.OK);
         }
 
     }
