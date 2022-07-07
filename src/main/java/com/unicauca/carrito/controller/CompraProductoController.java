@@ -27,6 +27,7 @@ public class CompraProductoController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/create")
+
     public ResponseEntity<CompraProducto> addCompraProducto(@RequestBody CompraProducto compraProducto){
 
 

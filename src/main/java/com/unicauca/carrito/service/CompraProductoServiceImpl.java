@@ -99,6 +99,10 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
             System.out.println("producto  no existe para añadir a la compra");
             return null;
         }
+        if(verificarCompra.getCliente().getUsername() != username){
+            System.out.println("Este usuario no puede modificar la compra de este item");
+            return null;
+        }
         //asignar los obj al obj que se va a actualizar
         compraProducto.setCompra(verificarCompra);
         compraProducto.setProducto(verificarProducto);
