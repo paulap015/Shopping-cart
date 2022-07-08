@@ -15,5 +15,5 @@ public interface IProductoService {
     boolean estaDisponible(String id);
     void reducirStock(String idProducto,int cantidad);
 
-
+    void aumentarStock(String idProducto,int cantidad);
 }

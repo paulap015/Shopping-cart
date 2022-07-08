@@ -63,6 +63,19 @@ public class ProductoServiceImpl implements IProductoService{
     }
 
     @Override
+    public void aumentarStock(String idProducto, int cantidad) {
+        //llega el id de producto y cantidad a reducir
+        Producto newProducto=encontrarPorId(idProducto);
+        //disminuimos la cantidad
+        newProducto.setCantidadStock(newProducto.getCantidadStock()+cantidad);
+        if(newProducto.getCantidadStock()==0){ //si queda en 0 entonces desactivarlo
+            newProducto.setEstado(false);
+        }
+        //actualizamos el producto
+        actualizar(newProducto);
+    }
+
+    @Override
     public Producto actualizar(Producto producto) {
         Categoria verificarCategoria = categoriaService.encontrarPorId(producto.getCategoria().getIdCategoria());
 

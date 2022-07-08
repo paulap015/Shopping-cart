@@ -130,6 +130,7 @@ public class CompraProductoServiceImpl implements ICompraProductoService{
         }
 
         comp.setEstado(false);
+        productoService.aumentarStock(comp.getProducto().getIdProducto(),comp.getCantidad());
         return compraProductoRepository.save(comp);
     }
 }
