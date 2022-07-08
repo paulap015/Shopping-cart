@@ -99,6 +99,7 @@ public class ProductoServiceImpl implements IProductoService{
         newProducto.setPrecio(producto.getPrecio());
         newProducto.setCantidadStock(producto.getCantidadStock());
         newProducto.setCategoria(producto.getCategoria());
+        newProducto.setDescripcion(producto.getDescripcion());
         //newProducto.setEstado(producto.getEstado());
 
         return  productoRepository.save(newProducto);
