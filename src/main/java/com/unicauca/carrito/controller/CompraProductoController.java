@@ -95,6 +95,7 @@ public class CompraProductoController {
         if (cat ==null){
             return ResponseEntity.noContent().build();
         }
+        compraProductoService.totalEnCompra(cat);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(cat);
     }
 }

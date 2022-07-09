@@ -17,4 +17,9 @@ public class Categoria {
     private String idCategoria;
     private String descripcion;
     private Boolean estado;
+
+    public Categoria(String descripcion, Boolean estado) {
+        this.descripcion = descripcion;
+        this.estado = estado;
+    }
 }

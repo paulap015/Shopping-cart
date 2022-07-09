@@ -52,6 +52,7 @@ public class CompraController {
             System.out.println("no existe la compra con ese id");
             return ResponseEntity.noContent().build();
         }
+
         return ResponseEntity.ok(comp);
     }
 
